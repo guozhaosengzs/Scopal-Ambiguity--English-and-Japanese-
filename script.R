@@ -1,6 +1,7 @@
 ## Use libraries
 library(tidyverse)
 library(lme4)
+library(lmerTest)
 
 ###### Prepare data
 
@@ -33,5 +34,12 @@ str(SLenJap)
 ###### Run Models
 
 ### Mixed Effect for Length data sets, using "lmer" function as the dependent variable is continuous
+
+## Sentence Length English
+# Check the correlation on frequency variables
+cor.test(SLenEng$maxF0, SLenEng$maxF0, method=c("pearson", "kendall", "spearman"))
+
+
+model.sle <- lmer()
 
 
