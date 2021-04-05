@@ -6,10 +6,10 @@ library(lmerTest)
 ###### Prepare data
 
 ### Import all the data
-GLenEng <- read_csv("C:\\Users\\guozh\\Desktop\\Scopal-Ambiguity-English-and-Japanese\\data\\GestureLengthEnglish.csv")
-GLenJap <- read_csv("C:\\Users\\guozh\\Desktop\\Scopal-Ambiguity-English-and-Japanese\\data\\GestureLengthJapanese.csv")
-SLenEng <- read_csv("C:\\Users\\guozh\\Desktop\\Scopal-Ambiguity-English-and-Japanese\\data\\SentenceLengthEnglish.csv")
-SLenJap <- read_csv("C:\\Users\\guozh\\Desktop\\Scopal-Ambiguity-English-and-Japanese\\data\\SentenceLengthJapanese.csv")
+GLenEng <- read_csv("data\\GestureLengthEnglish.csv")
+GLenJap <- read_csv("data\\GestureLengthJapanese.csv")
+SLenEng <- read_csv("data\\SentenceLengthEnglish.csv")
+SLenJap <- read_csv("data\\SentenceLengthJapanese.csv")
 
 
 ### Clean column names, check each of their type and change them if needed
@@ -35,11 +35,20 @@ str(SLenJap)
 
 ### Mixed Effect for Length data sets, using "lmer" function as the dependent variable is continuous
 
-## Sentence Length English
-# Check the correlation on frequency variables
-cor.test(SLenEng$maxF0, SLenEng$maxF0, method=c("pearson", "kendall", "spearman"))
+## English Sentence Length 
+
+# Sentence Length as R.V.
+
+sapply(SLenEng, levels)
+
+#Random Slope and Random Intercept
+model.EngSent.Len <- lmer(sentence_length ~ context  + (1 + context|subject/sentence), data = SLenEng) 
+ 
 
 
-model.sle <- lmer()
+
+
+
+
 
 
