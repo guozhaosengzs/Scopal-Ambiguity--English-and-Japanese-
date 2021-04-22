@@ -44,8 +44,8 @@ str(SLenJap)
 sapply(SLenEng, levels)
 
 # model.EngSent.Len <- lmer(sentence_length ~ context  + (1|keyword)  + (1|subject), data = SLenEng)
-# model.EngSent.Len <- lmer(sentence_length ~ context  + (1 + context|keyword/subject), data = SLenEng)
 
+# model.EngSent.Len <- lmer(sentence_length ~ context  + (1 + context|keyword/subject), data = SLenEng)
 model.EngSent.Len <- lmer(sentence_length ~ context  + (1 + context||keyword)  + (1 + context||subject), 
                           data = SLenEng, 
                           REML = FALSE,
@@ -96,5 +96,7 @@ model.JapSent.meanF0 <- lmer(meanF0 ~ context  + (1 + context||keyword)  + (1 + 
                              control=lmerControl(check.conv.singular = .makeCC(action = "ignore",  tol = 1e-4)))
 
 summary(model.JapSent.meanF0)
+
+
 
 
