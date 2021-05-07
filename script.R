@@ -159,3 +159,28 @@ summary(model.JapSent.meanF0)
 
 
 
+
+## Last Word Length as R.V. in English ----
+LastLenEng <- read_csv("data\\LastLenEng.csv")
+
+LastLenEng[c("subject", "context", "keyword")] <- lapply(LastLenEng[c("subject", "context", "keyword")], as.factor)
+
+model.LastLenEng <- lmer(last_word_len ~ context + 
+                              (1|keyword) + 
+                              (1|subject), 
+                          data = LastLenEng)
+
+summary(model.LastLenEng)
+
+
+## Last Word Length as R.V. in Japanese ----
+LastLenJap <- read_csv("data\\LastLenJap.csv")
+
+LastLenJap[c("subject", "context", "keyword")] <- lapply(LastLenJap[c("subject", "context", "keyword")], as.factor)
+
+model.LastLenJap <- lmer(last_word_len ~ context + 
+                             (1|keyword) + 
+                             (1|subject), 
+                         data = LastLenJap)
+
+summary(model.LastLenJap)

@@ -1,4 +1,4 @@
-subjects,sentences,contexts,sentence_length,maxF0,minF0,keyword,last_word_len
+subject,sentence,context,sentence_length,maxF0,minF0,keyword,last_word_len
 subj10_shorten_mono,all-Genmagnolias-Gen-flower-TopbloomNegwill,not > all,2734.976,358.3593738,46.54213521,magnolia,914.766
 subj10_shorten_mono,all-Genmagnolias-Gen-flower-TopbloomNegwill,all > not,2617.953,285.0445066,86.60085154,magnolia,892.15
 subj10_shorten_mono,Liam-Topmany-Genalumni-AccknowNeg,most/many > not,2759.442,289.727366,161.879119,alumnus,770.628
