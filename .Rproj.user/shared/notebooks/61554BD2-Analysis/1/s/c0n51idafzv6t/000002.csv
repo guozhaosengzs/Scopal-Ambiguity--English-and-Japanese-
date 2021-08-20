@@ -1,0 +1,7 @@
+"0","model.f1.Eng<- lmer(data = test.data.SenLen.Eng, "
+"0","                        f1 ~ context + "
+"0","                          (1 + context||keyword) + "
+"0","                          (1 + context||subject), REML = FALSE, "
+"0","                        control=lmerControl(check.conv.singular = .makeCC(action = ""ignore"",  tol = 1e-4)))"
+"2","Error in eval(predvars, data, env) : object 'f1' not found
+"
