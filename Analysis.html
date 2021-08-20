@@ -166,7 +166,7 @@ pre code {
 
 <h1 class="title toc-ignore">Analysis</h1>
 <h4 class="author">Zhaosen Guo</h4>
-<h4 class="date">7/10/2021</h4>
+<h4 class="date">8/20/2021</h4>
 
 </div>
 
@@ -319,7 +319,7 @@ library(lmerTest)</code></pre>
 <td align="center">gesture length (ms)</td>
 <td align="center">subjects &amp; keywords <strong>w/out “wool”</strong></td>
 <td align="center"><a href="#model15">jump</a></td>
-<td align="center"></td>
+<td align="center">*</td>
 </tr>
 <tr class="even">
 <td align="center">Japanese</td>
@@ -327,6 +327,22 @@ library(lmerTest)</code></pre>
 <td align="center">gesture length (ms)</td>
 <td align="center">subjects &amp; keywords <strong>w/out “wool”</strong></td>
 <td align="center"><a href="#model16">jump</a></td>
+<td align="center">*</td>
+</tr>
+<tr class="odd">
+<td align="center">English</td>
+<td align="center">sentence context (scope &amp; negation)</td>
+<td align="center">last word length (ms)</td>
+<td align="center">subjects &amp; keywords <strong>w/out “wool”</strong></td>
+<td align="center"><a href="#model17">jump</a></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">Japanese</td>
+<td align="center">sentence context (scope &amp; negation)</td>
+<td align="center">last word length (ms)</td>
+<td align="center">subjects &amp; keywords <strong>w/out “wool”</strong></td>
+<td align="center"><a href="#model18">jump</a></td>
 <td align="center"></td>
 </tr>
 </tbody>
@@ -1431,6 +1447,7 @@ Correlation of Fixed Effects:
 cntxtmst/&gt;n -0.537              
 cntxtnt&gt;all -0.681  0.434       
 cntxtn&gt;mst/ -0.624  0.703  0.589</code></pre>
+<p><br> Contrary to the results shown so far, when it comes to the gestures by the English-speaking subjects, changing context “all &gt; not” to “not &gt; all” would decrease the gesture duration by around 354 ms, with a rather good significance.</p>
 </div>
 </div>
 <div id="model16" class="section level3">
@@ -1441,8 +1458,185 @@ cntxtn&gt;mst/ -0.624  0.703  0.589</code></pre>
 <pre class="r"><code>data.GesLen.Jap &lt;- read_csv(&quot;data/GestureLengthJapanese.csv&quot;)
 data.GesLen.Jap&lt;- subset(data.GesLen.Jap, keyword != &quot;wool&quot;)
 data.GesLen.Jap[col_factor] &lt;- lapply(data.GesLen.Jap[col_factor], as.factor)</code></pre>
+<p>Run the model.</p>
+<pre class="r"><code>model.GesLen.Jap&lt;- lmer(data = data.GesLen.Jap,
+                        duration ~ context + 
+                          (1 + context||keyword) + 
+                          (1 + context||subject), REML = FALSE, 
+                        control=lmerControl(check.conv.singular = .makeCC(action = &quot;ignore&quot;,  tol = 1e-4)))
+summary(model.GesLen.Jap)</code></pre>
+<pre><code>Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite&#39;s
+  method [lmerModLmerTest]
+Formula: duration ~ context + (1 + context || keyword) + (1 + context ||  
+    subject)
+   Data: data.GesLen.Jap
+Control: lmerControl(check.conv.singular = .makeCC(action = &quot;ignore&quot;,  
+    tol = 1e-04))
+
+     AIC      BIC   logLik deviance df.resid 
+  5604.5   5712.3  -2775.2   5550.5      374 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.0256 -0.6587 -0.1147  0.4885  5.2096 
+
+Random effects:
+ Groups    Name                   Variance  Std.Dev.  Corr             
+ subject   contextall &gt; not       5.481e+03 7.403e+01                  
+           contextmost/many &gt; not 2.115e+04 1.454e+02 1.00             
+           contextnot &gt; all       9.228e+03 9.606e+01 1.00  1.00       
+           contextnot &gt; most/many 1.057e+04 1.028e+02 1.00  1.00  1.00 
+ subject.1 (Intercept)            1.015e-03 3.186e-02                  
+ keyword   contextall &gt; not       7.938e+02 2.817e+01                  
+           contextmost/many &gt; not 9.534e-05 9.764e-03 -0.12            
+           contextnot &gt; all       1.091e+03 3.302e+01  1.00 -0.12      
+           contextnot &gt; most/many 6.106e-05 7.814e-03  0.76 -0.31  0.76
+ keyword.1 (Intercept)            0.000e+00 0.000e+00                  
+ Residual                         5.523e+04 2.350e+02                  
+Number of obs: 401, groups:  subject, 20; keyword, 4
+
+Fixed effects:
+                       Estimate Std. Error      df t value Pr(&gt;|t|)    
+(Intercept)             485.161     34.063   4.213  14.243 0.000101 ***
+contextmost/many &gt; not  114.483     41.718   8.953   2.744 0.022799 *  
+contextnot &gt; all        -33.519     32.931  62.986  -1.018 0.312642    
+contextnot &gt; most/many   23.203     39.069   7.579   0.594 0.569878    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Correlation of Fixed Effects:
+            (Intr) cnt/&gt;n cntx&gt;a
+cntxtmst/&gt;n -0.434              
+cntxtnt&gt;all -0.299  0.367       
+cntxtn&gt;mst/ -0.582  0.609  0.352</code></pre>
+<p><br> With the Japanese-speaking subjects, the significant correlation in the model is on the “most/many &gt; not”, and when compared with baseline, the gesture duration is around 114 ms.</p>
 </div>
+</div>
+<div id="model17" class="section level3">
+<h3>Context vs Gesture Length, English</h3>
 <div id="back-to-top-12" class="section level6">
+<h6><a href="#intro">back to top</a></h6>
+<p>Import data, remove “wool” variable, and factor the levels .</p>
+<pre class="r"><code>data.LastLen.Eng &lt;- read_csv(&quot;data/LastLenEng.csv&quot;)
+data.LastLen.Eng&lt;- subset(data.LastLen.Eng, keyword != &quot;wool&quot;)
+data.LastLen.Eng[col_factor] &lt;- lapply(data.LastLen.Eng[col_factor], as.factor)</code></pre>
+<p>Run the model.</p>
+<pre class="r"><code>model.LastLen.Eng&lt;- lmer(data = data.LastLen.Eng, 
+                        last_word_len ~ context + 
+                          (1 + context||keyword) + 
+                          (1 + context||subject), REML = FALSE, 
+                        control=lmerControl(check.conv.singular = .makeCC(action = &quot;ignore&quot;,  tol = 1e-4)))
+summary(model.LastLen.Eng)</code></pre>
+<pre><code>Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite&#39;s
+  method [lmerModLmerTest]
+Formula: last_word_len ~ context + (1 + context || keyword) + (1 + context ||  
+    subject)
+   Data: data.LastLen.Eng
+Control: lmerControl(check.conv.singular = .makeCC(action = &quot;ignore&quot;,  
+    tol = 1e-04))
+
+     AIC      BIC   logLik deviance df.resid 
+  2411.2   2500.3  -1178.6   2357.2      173 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.9519 -0.5267  0.0005  0.5070  3.8660 
+
+Random effects:
+ Groups    Name                   Variance  Std.Dev.  Corr          
+ subject   contextall &gt; not       3.534e+03  59.44888               
+           contextmost/many &gt; not 4.810e+03  69.35401 0.06          
+           contextnot &gt; all       3.146e+03  56.08899 0.61 0.83     
+           contextnot &gt; most/many 2.138e+03  46.23939 0.45 0.12 0.35
+ subject.1 (Intercept)            0.000e+00   0.00000               
+ keyword   contextall &gt; not       1.296e+04 113.83157               
+           contextmost/many &gt; not 6.876e+03  82.91957 0.55          
+           contextnot &gt; all       1.147e+04 107.10296 1.00 0.55     
+           contextnot &gt; most/many 2.834e+03  53.23780 0.55 1.00 0.55
+ keyword.1 (Intercept)            1.525e-04   0.01235               
+ Residual                         4.961e+03  70.43278               
+Number of obs: 200, groups:  subject, 25; keyword, 4
+
+Fixed effects:
+                       Estimate Std. Error      df t value Pr(&gt;|t|)  
+(Intercept)             520.060     81.972   2.083   6.344   0.0216 *
+contextmost/many &gt; not  166.936    102.119   3.892   1.635   0.1794  
+contextnot &gt; all        -17.706     18.013  14.288  -0.983   0.3420  
+contextnot &gt; most/many  186.178     90.674   2.961   2.053   0.1335  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Correlation of Fixed Effects:
+            (Intr) cnt/&gt;n cntx&gt;a
+cntxtmst/&gt;n -0.801              
+cntxtnt&gt;all -0.367  0.359       
+cntxtn&gt;mst/ -0.897  0.959  0.323</code></pre>
+<p><br> The model found no statistical significant correlation between the duration of the last word in the sentence and the context of sentence, with English-speaking subjects.</p>
+</div>
+</div>
+<div id="model18" class="section level3">
+<h3>Context vs Gesture Length, Japanese</h3>
+<div id="back-to-top-13" class="section level6">
+<h6><a href="#intro">back to top</a></h6>
+<p>Import data, and factor the variable levels.</p>
+<pre class="r"><code>data.LastLen.Jap &lt;- read_csv(&quot;data/LastLenJap.csv&quot;)
+data.LastLen.Jap &lt;- subset(data.LastLen.Jap, keyword != &quot;wool&quot;)
+data.LastLen.Jap[col_factor] &lt;- lapply(data.LastLen.Jap[col_factor], as.factor)</code></pre>
+<p>Run the model.</p>
+<pre class="r"><code>model.LastLen.Jap&lt;- lmer(data = data.LastLen.Jap,
+                        last_word_len ~ context + 
+                          (1 + context||keyword) + 
+                          (1 + context||subject), REML = FALSE, 
+                        control=lmerControl(check.conv.singular = .makeCC(action = &quot;ignore&quot;,  tol = 1e-4)))
+summary(model.LastLen.Jap)</code></pre>
+<pre><code>Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite&#39;s
+  method [lmerModLmerTest]
+Formula: last_word_len ~ context + (1 + context || keyword) + (1 + context ||  
+    subject)
+   Data: data.LastLen.Jap
+Control: lmerControl(check.conv.singular = .makeCC(action = &quot;ignore&quot;,  
+    tol = 1e-04))
+
+     AIC      BIC   logLik deviance df.resid 
+  1916.8   1999.9   -931.4   1862.8      133 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.2422 -0.5457 -0.0898  0.5196  2.9118 
+
+Random effects:
+ Groups    Name                   Variance  Std.Dev.  Corr             
+ subject   contextall &gt; not       6.042e+03  77.73122                  
+           contextmost/many &gt; not 6.020e+03  77.58732 0.97             
+           contextnot &gt; all       5.470e+03  73.96281 1.00  0.98       
+           contextnot &gt; most/many 5.377e+03  73.32497 0.97  1.00  0.98 
+ subject.1 (Intercept)            1.293e-03   0.03597                  
+ keyword   contextall &gt; not       5.909e+03  76.86739                  
+           contextmost/many &gt; not 2.216e+04 148.85038 -0.28            
+           contextnot &gt; all       4.981e+03  70.57752  1.00 -0.28      
+           contextnot &gt; most/many 2.294e+04 151.44737 -0.28  1.00 -0.28
+ keyword.1 (Intercept)            5.650e-02   0.23770                  
+ Residual                         4.386e+03  66.22640                  
+Number of obs: 160, groups:  subject, 20; keyword, 4
+
+Fixed effects:
+                       Estimate Std. Error       df t value Pr(&gt;|t|)   
+(Intercept)             963.071     58.018    2.399  16.600  0.00156 **
+contextmost/many &gt; not -136.355    119.444    3.019  -1.142  0.33603   
+contextnot &gt; all         -2.877     15.488   11.517  -0.186  0.85586   
+contextnot &gt; most/many -144.115    121.070    2.990  -1.190  0.31978   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Correlation of Fixed Effects:
+            (Intr) cnt/&gt;n cntx&gt;a
+cntxtmst/&gt;n -0.443              
+cntxtnt&gt;all -0.407  0.191       
+cntxtn&gt;mst/ -0.440  0.992  0.189</code></pre>
+<p><br> The model found no statistical significant correlation between the duration of the last word in the sentence and the context of sentence, with Japanese-speaking subjects.</p>
+<hr />
+</div>
+<div id="back-to-top-14" class="section level6">
 <h6><a href="#intro">back to top</a></h6>
 </div>
 </div>

@@ -1,7 +1,7 @@
 ---
 title: "Analysis"
 author: "Zhaosen Guo"
-date: "7/10/2021"
+date: "8/20/2021"
 output:
   html_document: default
   pdf_document: default
@@ -413,5 +413,7 @@ summary(model.LastLen.Jap)
 ```
 <br>
 The model found no statistical significant correlation between the duration of the last word in the sentence and the context of sentence, with Japanese-speaking subjects.
+
+---------------------
 
 ###### [back to top](#intro)
